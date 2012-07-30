@@ -80,7 +80,7 @@ None yet - maybe this software is perfect! (ahahahahahahahahaha)
 
 =head1 COPYRIGHT
 
-Copyright (c) 2012 the Import::Into L</AUTHOR> and L</CONTRIBUTORS>
+Copyright (c) 2012 the curry L</AUTHOR> and L</CONTRIBUTORS>
 as listed above.
 
 =head1 LICENSE
