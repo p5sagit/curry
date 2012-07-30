@@ -19,7 +19,7 @@ use Scalar::Util ();
 sub AUTOLOAD {
   my $invocant = shift;
   Scalar::Util::weaken($invocant) if Scalar::Util::blessed($invocant);
-  my ($method) = our $AUTOLOAD =~ /^curry::(.+)$/;
+  my ($method) = our $AUTOLOAD =~ /^curry::weak::(.+)$/;
   my @args = @_;
   return sub {
     return unless $invocant;
