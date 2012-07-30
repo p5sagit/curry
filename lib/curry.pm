@@ -22,6 +22,7 @@ sub AUTOLOAD {
   my ($method) = our $AUTOLOAD =~ /^curry::(.+)$/;
   my @args = @_;
   return sub {
+    return unless $invocant;
     $invocant->$method(@args => @_);
   }
 }
@@ -52,7 +53,10 @@ is equivalent to:
 
   my $code = do {
     Scalar::Util::weaken(my $weak_obj = $obj);
-    sub { $weak_obj->frobnicate(foo => @_) };
+    sub {
+      return unless $weak_obj; # in case it already went away
+      $weak_obj->frobnicate(foo => @_)
+    };
   };
 
 =head1 RATIONALE
