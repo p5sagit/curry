@@ -1,6 +1,6 @@
 package curry;
 
-our $VERSION = '1.0';
+our $VERSION = '1.000000';
 $VERSION = eval $VERSION;
 
 sub AUTOLOAD {
