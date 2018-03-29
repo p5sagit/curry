@@ -27,7 +27,7 @@ $curry::weak = sub {
   Scalar::Util::weaken($invocant) if Scalar::Util::blessed($invocant);
   my @args = @_;
   sub {
-    return unless $invocant;
+    return unless defined $invocant;
     $invocant->$code(@args => @_)
   }
 };
@@ -38,7 +38,7 @@ sub AUTOLOAD {
   my ($method) = our $AUTOLOAD =~ /^curry::weak::(.+)$/;
   my @args = @_;
   return sub {
-    return unless $invocant;
+    return unless defined $invocant;
     $invocant->$method(@args => @_);
   }
 }
