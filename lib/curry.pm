@@ -24,7 +24,7 @@ use Scalar::Util ();
 
 $curry::weak = sub {
   my ($invocant, $code) = splice @_, 0, 2;
-  Scalar::Util::weaken($invocant) if Scalar::Util::blessed($invocant);
+  Scalar::Util::weaken($invocant) if length ref $invocant;
   my @args = @_;
   sub {
     return unless defined $invocant;
@@ -34,7 +34,7 @@ $curry::weak = sub {
 
 sub AUTOLOAD {
   my $invocant = shift;
-  Scalar::Util::weaken($invocant) if Scalar::Util::blessed($invocant);
+  Scalar::Util::weaken($invocant) if length ref $invocant;
   my ($method) = our $AUTOLOAD =~ /^curry::weak::(.+)$/;
   my @args = @_;
   return sub {
