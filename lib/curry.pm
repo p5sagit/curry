@@ -1,6 +1,6 @@
 package curry;
 
-our $VERSION = '1.001000';
+our $VERSION = '2.000000';
 $VERSION = eval $VERSION;
 
 our $curry = sub {
