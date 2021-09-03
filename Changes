@@ -1,5 +1,7 @@
 Revision history for curry
 
+  - Support curry::_ and curry::weak::_
+
 1.001000 - 2017-06-23
   - Support $curry::curry and $curry::weak
 

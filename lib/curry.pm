@@ -9,6 +9,8 @@ our $curry = sub {
   sub { $invocant->$code(@args => @_) }
 };
 
+sub curry::_ { &$curry }
+
 sub AUTOLOAD {
   my $invocant = shift;
   my ($method) = our $AUTOLOAD =~ /^curry::(.+)$/;
@@ -31,6 +33,8 @@ $curry::weak = sub {
     $invocant->$code(@args => @_)
   }
 };
+
+sub curry::_ { &$curry::weak }
 
 sub AUTOLOAD {
   my $invocant = shift;
@@ -59,6 +63,10 @@ is equivalent to:
 
   my $code = sub { $obj->frobnicate(foo => @_) };
 
+If you have a method name (or a coderef), you can call (as of version 2):
+
+  my $code = $obj->curry::_($method => 'foo');
+
 Additionally,
 
   use curry::weak;
@@ -75,45 +83,14 @@ is equivalent to:
     };
   };
 
-If you want to pass a weakened copy of an object to a coderef, use the
-C< $weak > package variable:
+Similarly, given a method name or coderef (as of version 2):
 
- use curry::weak;
+  my $code = $obj->curry::weak::_($method => 'foo');
 
- my $code = $self->$curry::weak(sub {
-  my ($self, @args) = @_;
-  print "$self must still be alive, because we were called (with @args)\n";
- }, 'xyz');
-
-which is much the same as:
-
- my $code = do {
-  my $sub = sub {
-   my ($self, @args) = @_;
-   print "$self must still be alive, because we were called (with @args)\n";
-  };
-  Scalar::Util::weaken(my $weak_obj = $self);
-  sub {
-   return unless $weak_obj; # in case it already went away
-   $sub->($weak_obj, 'xyz', @_);
-  }
- };
-
-There's an equivalent - but somewhat less useful - C< $curry > package variable:
-
- use curry;
-
- my $code = $self->$curry::curry(sub {
-  my ($self, $var) = @_;
-  print "The stashed value from our ->something method call was $var\n";
- }, $self->something('complicated'));
-
-Both of these methods can also be used if your scalar is a method name, rather
-than a coderef.
-
- use curry;
-
- my $code = $self->$curry::curry($methodname, $self->something('complicated'));
+There are also C<$curry::curry> and C<$curry::weak> globals that work
+equivalently to C<curry::_> and C<curry::weak::_> respectively - you'll
+quite possibly see them in existing code because they were provided in
+pre-2.0 versions but they're unlikely to be the best option for new code.
 
 =head1 RATIONALE
 
