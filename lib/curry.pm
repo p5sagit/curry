@@ -34,7 +34,7 @@ $curry::weak = sub {
   }
 };
 
-sub curry::_ { &$curry::weak }
+sub curry::weak::_ { &$curry::weak }
 
 sub AUTOLOAD {
   my $invocant = shift;
