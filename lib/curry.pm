@@ -103,6 +103,11 @@ to be sure you weren't closing over things the wrong way?
 
 Right. That's why I wrote this.
 
+=head1 SEE ALSO
+
+I gave a lightning talk on this module (and L<Safe::Isa> and L<Import::Into>) at
+L<YAPC::NA 2013|https://www.youtube.com/watch?v=wFXWV2yY7gE&t=46m05s>.
+
 =head1 AUTHOR
 
 mst - Matt S. Trout (cpan:MSTROUT) <mst@shadowcat.co.uk>
