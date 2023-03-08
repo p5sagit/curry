@@ -47,6 +47,32 @@ sub AUTOLOAD {
   }
 }
 
+{
+  use Variable::Magic ();
+  my %cast = (curry => 1);
+  my $fetcher;
+  $fetcher = sub {
+    my ($parent) = @_;
+    my %recurse;
+    sub {
+      my ($hash, undef, $key) = @_;
+      return
+        if $recurse{recurse} or $key !~ /::\z/;
+      my $package = $parent.'::'.$key;
+      $package =~ s{::\z}{};
+      return if $cast{$package};
+      local $recurse{recurse} = 1;
+
+      no strict 'refs';
+      *{$package.'::AUTOLOAD'} = \&curry::AUTOLOAD;
+      my $stash = $hash->{$key};
+      Variable::Magic::cast(%{ $hash->{$key} }, Variable::Magic::wizard(fetch => $fetcher->($package)));
+      $cast{$package} = 1;
+    };
+  };
+  Variable::Magic::cast(%{ $::{'curry::'} }, Variable::Magic::wizard(fetch => $fetcher->('curry')));
+}
+
 1;
 
 =head1 NAME
